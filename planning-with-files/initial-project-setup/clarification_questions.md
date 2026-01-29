@@ -1,0 +1,16 @@
+# Clarification Questions
+
+1. **Interface Preference**: Do you imagine this "Prompt Storage" as a **CLI tool** (command line), a **Web Application** (e.g., Next.js running locally), or simply a **Structured Markdown Vault** (folder structure to use with Obsidian/VS Code)? i wanted it to have a cli tool when when i type "npx arsenal" it will install the arsenal and would log me in into my account, and when i type "arsenal pull" i would be able to pull the prompts and configuration , for the configuration i wanetd the user to be able to choose which set up he wanted to pull, like the user can select multiple options, the user can also select which agent he can choose lets say, antigravity,claude,windsuft,cursor and many more in the future, i would also create a web interface to view the prompt configuration of the user, the web interface would be used to create and edit the prompts, and the cli tool would be used to pull the prompts and configuration, the web interface would be used to create and edit the prompts, and the cli tool would be used to pull the prompts and configuration, the web interface is like a marketplace wherein you can add specific prompts in your config but at the same time you can directly pull it in your current project, after selecting an agent the next prompt in the cli is installation scope which is either project or user level
+   * *Context*: "Easy setup" could mean any of these, but knowing the interface determines the tech stack.
+
+2. **Storage Backend**: Should the prompts be stored as **flat files** (Markdown/JSON/YAML) so they are version-controllable via Git, or do you prefer a **Database** (SQLite/Supabase)?should be stored in .md in the web interface i wanted it to be like a git, the user can change prompts but that would also change the version, the web interface should be user .git,
+   * *Context*: For a *personal* storage, flat files are often easiest to manage and version control.
+
+3. **Execution Capabilities**: Do you want the tool to just *store* the prompts, or also be able to **execute/run** them against APIs (like OpenAI/Anthropic) directly from the tool? i will plan this in the future but for know it doesnt have anything just store the prompt but later in the future i wanted to have a testable environment in the web where i can compare depending on the prompt what type of things it will generate
+   * *Context*: "Production ready prompt" implies testing capabilities might be useful.
+
+4. **Tech Stack Constraints**: Do you have any preferred technologies? (e.g., Python vs Node.js vs Rust)? I wanted you to use vite for the web interface, and use go for the cli,
+
+i wanted this project to be a mono repo, and the cli tool should be able to run in linux, mac and windows, 
+
+also i wanted you to help me ideate about where should i put the documentation and i also have a link of this to my github repo because this is one of the project that i wanted to showcase in my portfolio, i just wonder what link i will put there, is it the web interface, is it the cli or is it the docs?, if i will put the github link they might not be able to see the overall thing i dont know how i can showcase this, i wanted it to be interactive and easy to understand for the recruiter, help me ideate
