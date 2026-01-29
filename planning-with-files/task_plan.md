@@ -1,6 +1,6 @@
-# Task Plan: Initial Project Setup & README
+# Task Plan: Arsenal (Monorepo)
 
-**Goal**: Setup the "Arsenal" Monorepo (Go CLI + Vite Web) and create a portfolio-ready README.
+**Goal**: Build the "Arsenal" Monorepo (Go CLI + Vite Web) and create a portfolio-ready README.
 
 ## Phase 1: Context & Planning
 - [x] Research prompt management tool features.
@@ -8,17 +8,29 @@
 - [x] Clarify requirements (CLI=Go, Web=Vite, Monorepo).
 - [x] **Portfolio Ideation**: Defining the "Showcase" strategy.
 
-## Phase 2: Project Structure Setup (Active)
-- [ ] Initialize `go.mod` for CLI (`github.com/winsonbaring/arsenal/cli`).
-- [ ] Initialize Vite project for Web (React + TS).
-- [ ] Install Tailwind CSS v4 for Web.
-- [ ] Commit scaffolding.
+## Phase 2: Project Structure Setup (Partially Complete)
+- [x] Create directory structure (`cli/`, `web/`, `docs/`).
+- [ ] Initialize `go.mod` for CLI in `/cli` (`github.com/winsonbaring/arsenal/cli`).
+- [x] Initialize Vite project for Web (React + TS).
+- [x] Install Tailwind CSS v4 for Web.
+- [x] Commit scaffolding.
 
-## Phase 3: README & Documentation
-- [x] Draft `README.md` (The "Landing Page").
+## Phase 3: CLI Implementation (Go)
+**Stack**: Cobra, Viper, Bubbletea.
+- [ ] **Setup**: Install dependencies (`cobra`, `viper`, `bubbletea`).
+- [ ] **Auth**: Implement `arsenal login` (Device Flow + Token Storage).
+- [ ] **Logic**: Implement `arsenal pull` with **Adapter Strategy**.
+    - [ ] `Adapter` Interface.
+    - [ ] `CursorAdapter` implementation.
+    - [ ] `WindsurfAdapter` implementation.
+- [ ] **UI**: Build Interactive TUI (spinners, checklists).
+
+## Phase 4: Web Interface Implementation
+- [ ] **Dashboard**: Build "My Library" view.
+- [ ] **Editor**: Build Markdown Editor with Frontmatter support.
+- [ ] **Marketplace**: Build "Public Prompts" view.
+
+## Phase 5: Documentation & Polish
+- [x] Draft `README.md` (Landing Page).
 - [ ] Document the "Marketplace" vs "Local" workflow.
-
-## Phase 4: Finalization
-- [ ] Verify folder structure matches plans.
-- [ ] Review README for "Portfolio appeal".
-- [ ] Commit changes.
+- [ ] Verify README for "Portfolio appeal".

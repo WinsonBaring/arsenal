@@ -6,37 +6,43 @@
 *   **CLI Tool (`/cli`)**:
     *   **Language**: Go (Golang).
     *   **Platforms**: Linux, Mac, Windows.
-    *   **Functionality**:
-        *   `npx arsenal`: Install/Login.
-        *   `arsenal pull`: Fetch prompts/configs.
-        *   **Interactive Selection**:
-            *   Select Setup/Config (multiple selection).
-            *   Select Agent (Antigravity, Claude, Windsurf, Cursor, etc.).
-            *   Select Scope (Project vs User level).
+    *   **Functionality**: `npx arsenal` (Install/Login), `arsenal pull`.
+    *   **Interactive Selection**: Setup/Config, Agent (Antigravity, Cursor, etc.), Scope.
 *   **Web Interface (`/web`)**:
-    *   **Framework**: Vite.
+    *   **Framework**: Vite + React + Tailwind v4 + Shadcn UI.
     *   **Concept**: "Marketplace" for prompts.
-    *   **Functionality**:
-        *   Create/Edit prompts.
-        *   Manage configurations.
-        *   **Storage**: Markdown (`.md`) files.
-        *   **Versioning**: Git-like constraints (changing a prompt updates its version).
-*   **Future**:
-    *   Testable environment for prompts (compare outputs).
+    *   **Storage**: Markdown (`.md`) files with Git-like versioning.
+
+### CLI Implementation Details
+*   **Tech Stack**:
+    *   **Framework**: Cobra (Standard for Go CLIs).
+    *   **Config**: Viper (Handles env vars + config files).
+    *   **UI/UX**: Charmbracelet Stack (`bubbletea`, `lipgloss`) for "Premium" feel.
+    *   **Auth**: Device Flow (Browser-based) -> Saves token to `~/.arsenal.yaml`.
+*   **Architecture: Adapters**:
+    ```go
+    type Adapter interface {
+        Name() string
+        Detect(cwd string) bool
+        Apply(config Config, prompts []Prompt) error
+    }
+    ```
+*   **Directory Structure**:
+    ```text
+    /cli
+    ├── cmd/arsenal/   # main.go + command definitions
+    ├── internal/
+    │   ├── auth/      # Login logic
+    │   ├── config/    # Configuration handling
+    │   ├── tui/       # Bubbletea models/views
+    │   └── adapters/  # Cursor, Windsurf, generic adapters
+    └── go.mod
+    ```
 
 ### Research: Personal Prompt Management Tools
 **Date**: 2026-01-29
 **Source**: Search Results
-
 #### Key Features
 *   **Centralized Repository**: Single source of truth.
-*   **Organization**: Categories, tags, folders (e.g., by use-case, project).
-*   **Metadata**: Model compatibility, author, cost, latency.
 *   **Versioning**: Git-like version control for prompts is crucial.
 *   **Templating**: Variables (e.g., `{{variable}}`) for dynamic prompts.
-*   **Playground/Testing**: Ability to test prompts against models.
-
-#### Best Practices
-1.  **Treat Prompts as Code**: Version them, review them.
-2.  **Clear Naming**: `Task-Description-Model` convention.
-3.  **Examples**: Include few-shot examples in documentation.
