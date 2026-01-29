@@ -8,10 +8,11 @@
 - [x] Clarify requirements (CLI=Go, Web=Vite, Monorepo).
 - [x] **Portfolio Ideation**: Defining the "Showcase" strategy.
 
-## Phase 2: Project Structure Setup
-- [x] Create Monorepo Skeleton (`/cli`, `/web`, `/docs`).
-- [ ] Initialize `go.mod` for CLI.
-- [ ] Initialize Vite project for Web.
+## Phase 2: Project Structure Setup (Active)
+- [ ] Initialize `go.mod` for CLI (`github.com/winsonbaring/arsenal/cli`).
+- [ ] Initialize Vite project for Web (React + TS).
+- [ ] Install Tailwind CSS v4 for Web.
+- [ ] Commit scaffolding.
 
 ## Phase 3: README & Documentation
 - [x] Draft `README.md` (The "Landing Page").
