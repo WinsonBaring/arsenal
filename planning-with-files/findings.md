@@ -1,48 +1,17 @@
 # Findings
 
-## Project Requirements (Updated 2026-01-29)
+## Project Requirements (Updated 2026-01-31)
+*   **Architecture**: Monorepo (Go CLI + Vite Web).
+*   **CLI Stack**: Cobra, Viper, Bubbletea, **Afero** (FS), **Sprig** (Templates).
 
-### Architecture: Monorepo
-*   **CLI Tool (`/cli`)**:
-    *   **Language**: Go (Golang).
-    *   **Platforms**: Linux, Mac, Windows.
-    *   **Functionality**: `npx arsenal` (Install/Login), `arsenal pull`.
-    *   **Interactive Selection**: Setup/Config, Agent (Antigravity, Cursor, etc.), Scope.
-*   **Web Interface (`/web`)**:
-    *   **Framework**: Vite + React + Tailwind v4 + Shadcn UI.
-    *   **Concept**: "Marketplace" for prompts.
-    *   **Storage**: Markdown (`.md`) files with Git-like versioning.
+### Strategic Decisions (CLI)
+*   **Auth**: **Stub Implementation**. We will simulate the Device Flow UX but store a dummy token. Real auth requires the backend (Phase 6).
+*   **API**: **Mock Client**. We will build a `Client` interface but use a `MockProvider` that returns hardcoded JSON. This allows us to perfect the "Injection Engine" immediately.
+*   **Agent Path Resolution**:
+    *   **Antigravity**: `.agent/rules/*.md`
+    *   **Claude Code**: `.claude/rules/*.md`
+    *   **Cursor**: `.cursorrules` (Block Injection)
 
-### CLI Implementation Details
-*   **Tech Stack**:
-    *   **Framework**: Cobra (Standard for Go CLIs).
-    *   **Config**: Viper (Handles env vars + config files).
-    *   **UI/UX**: Charmbracelet Stack (`bubbletea`, `lipgloss`) for "Premium" feel.
-    *   **Auth**: Device Flow (Browser-based) -> Saves token to `~/.arsenal.yaml`.
-*   **Architecture: Adapters**:
-    ```go
-    type Adapter interface {
-        Name() string
-        Detect(cwd string) bool
-        Apply(config Config, prompts []Prompt) error
-    }
-    ```
-*   **Directory Structure**:
-    ```text
-    /cli
-    ├── cmd/arsenal/   # main.go + command definitions
-    ├── internal/
-    │   ├── auth/      # Login logic
-    │   ├── config/    # Configuration handling
-    │   ├── tui/       # Bubbletea models/views
-    │   └── adapters/  # Cursor, Windsurf, generic adapters
-    └── go.mod
-    ```
-
-### Research: Personal Prompt Management Tools
-**Date**: 2026-01-29
-**Source**: Search Results
-#### Key Features
-*   **Centralized Repository**: Single source of truth.
-*   **Versioning**: Git-like version control for prompts is crucial.
-*   **Templating**: Variables (e.g., `{{variable}}`) for dynamic prompts.
+### CLI Configuration
+*   **Global**: `~/.arsenal/config.yaml` (Auth token).
+*   **Local**: `arsenal.json` (Project-specific selections).

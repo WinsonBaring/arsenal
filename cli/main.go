@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/winsonbaring/arsenal/cli/cmd"
 
 func main() {
-	fmt.Println("Arsenal CLI - Coming Soon")
+	cmd.Execute()
 }

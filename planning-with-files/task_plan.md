@@ -15,7 +15,7 @@
 - [x] Install Tailwind CSS v4 for Web.
 - [x] Commit scaffolding.
 
-## Phase 3: CLI Implementation (Go)
+## Phase 3: [Issue #1] CLI Implementation (Go)
 **Stack**: Cobra, Viper, Bubbletea.
 - [ ] **Setup**: Install dependencies (`cobra`, `viper`, `bubbletea`).
 - [ ] **Auth**: Implement `arsenal login` (Device Flow + Token Storage).

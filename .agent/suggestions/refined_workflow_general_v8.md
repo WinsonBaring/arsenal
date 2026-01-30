@@ -30,7 +30,7 @@ If you think the current task is not yet finished (like you are just improving o
 
 If you think you are done:
 1.  **Flush**: Summarize what you did (user-facing stuff only) and put it in `CHANGELOG.md` under Unreleased.
-2.  **Update Issue**: Do **NOT** close the GitHub issue yet. Instead, add a comment summarizing your changes and referencing the commit hash, then ask me if I want to close it.
+2.  **Update Issue**: Do **NOT** close the GitHub issue yet if the implementation is not yet finished. 
 3.  **Update State**: Update `planning-with-files/current_state.md` so the next agent knows what happened.
 4.  **Commit**: This is something you should never forget—**always and always commit** before finishing your current actions. Your commit message should be proper (like `feat: ...`) and link to the issue (`closes #12`).
 
