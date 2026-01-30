@@ -4,10 +4,8 @@
 *   **Action**: Started `initial-project-setup`.
 *   **Action**: Scaffolding complete.
 *   **Action**: Ideated Workflow Strategies.
-*   **Action**: Created `refined_workflow_general_v4.md`:
-    *   Added **Mode Selection** (Ideation vs Execution).
-    *   Defined "Scratchpad Protocol" for brainstorming.
-*   **Action**: Created `workflow_diagram_v2.md`:
-    *   Visualized the "The Fork" (Mode Selection).
-    *   Visualized how Ideation outputs feed into Planning.
-*   **Status**: Ready to proceed with execution (CLI implementation).
+*   **Action**: Finalized "Universal Agent Protocol v6" (Auto-GitHub).
+*   **Action**: Created `refined_workflow_general_v7.md`:
+    *   **Humanized**: Rewrote v6 into the User's specific conversational tone.
+    *   **Instruction Parity**: Maintained all technical requirements (Auto-GitHub, One-File Plan, PROJECT.md) but phrased as direct commands ("I wanted you to...").
+*   **Status**: Meta-Work complete. Ready to apply to Arsenal.
