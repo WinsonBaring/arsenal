@@ -1,7 +1,7 @@
 # Current State
 
 *   **Phase**: Phase 3 (CLI Implementation).
-*   **Status**: Core Structure Initialized.
-*   **Latest Action**: Implemented `root.go` and verified build.
-*   **Next**: Implement `auth` command (Stub).
-*   **Active Issue**: #1.
+*   **Status**: Core Logic Implemented (Auth + Pull).
+*   **Latest Action**: Verified `arsenal pull` injection logic.
+*   **Next**: User Decision (Close Issue #2).
+*   **Active Issue**: #2.
