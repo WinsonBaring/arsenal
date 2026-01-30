@@ -1,7 +1,7 @@
 # Current State
 
-*   **Phase**: Phase 3 (CLI Implementation).
-*   **Status**: Core Logic Implemented (Auth + Pull).
-*   **Latest Action**: Verified `arsenal pull` injection logic.
-*   **Next**: User Decision (Close Issue #2).
-*   **Active Issue**: #2.
+*   **Phase**: Phase 3: CLI Polish.
+*   **Status**: Interactive TUI Implemented.
+*   **Latest Action**: Verified compilation of TUI selector.
+*   **Next**: User Decision (Phase 4: Web).
+*   **Active Issue**: #3.

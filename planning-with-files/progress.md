@@ -13,3 +13,7 @@
 *   **Action**: Implemented `cmd/pull.go`, `engine/detector.go`, `engine/injector.go`, `pkg/api/client.go`.
 *   **Verified**: `arsenal pull` correctly detects agent type, fetches mock prompts, and injects them using Block Pattern.
 *   **Status**: Core CLI features (Auth + Pull) are functional.
+*   **Action**: **Started [Issue #3] TUI Polish**.
+*   **Action**: Implemented `internal/tui/selector.go` (Multi-select checklist).
+*   **Action**: Updated `cmd/pull.go` to use TUI and save `arsenal.json`.
+*   **Status**: Interactive Pull is implemented.

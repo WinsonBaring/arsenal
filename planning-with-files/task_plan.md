@@ -18,12 +18,13 @@
 ## Phase 3: [Issue #1] CLI Implementation (Go)
 **Stack**: Cobra, Viper, Bubbletea.
 - [x] **Setup**: Install dependencies (`cobra`, `viper`, `bubbletea`).
-- [ ] **Auth**: [Issue #2] Implement `arsenal login` (Device Flow + Token Storage).
-- [ ] **Logic**: [Issue #2] Implement `arsenal pull` with **Adapter Strategy**.
+- [x] **Auth**: [Issue #2] Implement `arsenal login` (Device Flow + Token Storage).
+- [x] **Logic**: [Issue #2] Implement `arsenal pull` with **Adapter Strategy**.
     - [ ] `Adapter` Interface.
     - [ ] `CursorAdapter` implementation.
     - [ ] `WindsurfAdapter` implementation.
-- [ ] **UI**: Build Interactive TUI (spinners, checklists).
+- [ ] **UI**: [Issue #3] Build Interactive TUI (spinners, checklists).
+- [ ] **Persistance**: [Issue #3] Save local config to `arsenal.json`.
 
 ## Phase 4: Web Interface Implementation
 - [ ] **Dashboard**: Build "My Library" view.
