@@ -1,6 +1,7 @@
 import { neon } from '@neondatabase/serverless';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default async function handler(req, res) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!process.env.DATABASE_URL) {
         return res.status(500).json({ error: 'DATABASE_URL not set' });
     }
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
 
         res.setHeader('Allow', ['GET', 'POST', 'PUT']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
-    } catch (error) {
+    } catch (error: any) {
         console.error('API Error:', error);
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
