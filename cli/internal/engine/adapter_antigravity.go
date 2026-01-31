@@ -20,19 +20,34 @@ func (a *AntigravityAdapter) Name() string {
 }
 
 func (a *AntigravityAdapter) Detect(cwd string) bool {
-	exists, _ := afero.Exists(a.fs, filepath.Join(cwd, ".agent"))
-	return exists
+	root := FindRootWith(a.fs, cwd, ".agent")
+	return root != ""
 }
 
 func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) error {
-	// We inject into .agent/arsenal_generated_rules.md
-	target := filepath.Join(cwd, ".agent", "arsenal_generated_rules.md")
+	root := FindRootWith(a.fs, cwd, ".agent")
+	if root == "" {
+		root = cwd // Fallback to current dir if not found (shouldn't happen if Detect passed)
+	}
+	
+	// Ensure skills directory exists
+	skillsDir := filepath.Join(root, ".agent", "skills")
+	if err := a.fs.MkdirAll(skillsDir, 0755); err != nil {
+		return err
+	}
+
+	// We inject into .agent/skills/arsenal_generated_rules.md
+	target := filepath.Join(skillsDir, "arsenal_generated_rules.md")
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
 
 func (a *AntigravityAdapter) Clean(cwd string) error {
-	target := filepath.Join(cwd, ".agent", "arsenal_generated_rules.md")
+	root := FindRootWith(a.fs, cwd, ".agent")
+	if root == "" {
+		root = cwd
+	}
+	target := filepath.Join(root, ".agent", "skills", "arsenal_generated_rules.md")
 	injector := NewInjector(a.fs)
 	return injector.Clean(target)
 }

@@ -20,19 +20,34 @@ func (a *WindsurfAdapter) Name() string {
 }
 
 func (a *WindsurfAdapter) Detect(cwd string) bool {
-	existsRules, _ := afero.Exists(a.fs, filepath.Join(cwd, ".windsurfrules"))
-	existsDir, _ := afero.Exists(a.fs, filepath.Join(cwd, ".windsurf"))
-	return existsRules || existsDir
+	rootRules := FindRootWith(a.fs, cwd, ".windsurfrules")
+	rootDir := FindRootWith(a.fs, cwd, ".windsurf")
+	return rootRules != "" || rootDir != ""
 }
 
 func (a *WindsurfAdapter) Inject(cwd string, prompts []api.Prompt) error {
-	target := filepath.Join(cwd, ".windsurfrules")
+	root := FindRootWith(a.fs, cwd, ".windsurfrules")
+	if root == "" {
+		// Try finding .windsurf dir
+		root = FindRootWith(a.fs, cwd, ".windsurf")
+	}
+	if root == "" {
+		root = cwd
+	}
+	target := filepath.Join(root, ".windsurfrules")
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
 
 func (a *WindsurfAdapter) Clean(cwd string) error {
-	target := filepath.Join(cwd, ".windsurfrules")
+	root := FindRootWith(a.fs, cwd, ".windsurfrules")
+	if root == "" {
+		root = FindRootWith(a.fs, cwd, ".windsurf")
+	}
+	if root == "" {
+		root = cwd
+	}
+	target := filepath.Join(root, ".windsurfrules")
 	injector := NewInjector(a.fs)
 	return injector.Clean(target)
 }

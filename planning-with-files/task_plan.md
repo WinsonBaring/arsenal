@@ -33,6 +33,12 @@
 - [x] **Editor**: Build Markdown Editor with Frontmatter support.
 - [x] **Marketplace**: Build "Public Prompts" view.
 
+## Phase 4.5: Integration & Infrastructure [Completed]
+- [x] **Database**: Connect Web App to Neon Postgres (Production).
+- [x] **API**: Connect CLI `pull` command to real `/api/prompts` endpoint.
+- [x] **DevOps**: Fix Vercel/Vite port conflicts and Environment Variable loading.
+- [x] **Robustness**: Ensure CLI detects Agents from nested subdirectories.
+
 ## Phase 5: Documentation & Polish
 - [x] Draft `README.md` (Landing Page).
 - [ ] Document the "Marketplace" vs "Local" workflow.

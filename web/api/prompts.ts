@@ -6,7 +6,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(500).json({ error: 'DATABASE_URL not set' });
     }
 
-    const sql = neon(process.env.DATABASE_URL);
+    const sql = neon(process.env.DATABASE_URL!);
+
+
 
     try {
         if (req.method === 'GET') {

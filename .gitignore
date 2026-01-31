@@ -1,4 +1,6 @@
 # General
+
+node_modules
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -28,3 +30,11 @@ pnpm-debug.log*
 # Arsenal Specific
 arsenal.json
 arsenal_prompts.md
+
+# Env Files
+.env
+.env.local
+*.env
+
+.vercel
+.env*.local

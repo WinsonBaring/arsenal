@@ -1,10 +1,11 @@
 # BEGIN ARSENAL MANAGED BLOCK
 # Do not edit this block manually. It will be overwritten.
 
-### TypeScript Strict
-Always use strict typing. No 'any'.
+### React Component
+Write a React functional component...
 
-### React Performance
-Use React.memo only when necessary. Prefer composition.
+### Go CLI Command
+Create a new Cobra command...
 
 # END ARSENAL MANAGED BLOCK
+

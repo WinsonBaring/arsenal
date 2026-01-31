@@ -20,18 +20,26 @@ func (a *CursorAdapter) Name() string {
 }
 
 func (a *CursorAdapter) Detect(cwd string) bool {
-	exists, _ := afero.Exists(a.fs, filepath.Join(cwd, ".cursorrules"))
-	return exists
+	root := FindRootWith(a.fs, cwd, ".cursorrules")
+	return root != ""
 }
 
 func (a *CursorAdapter) Inject(cwd string, prompts []api.Prompt) error {
-	target := filepath.Join(cwd, ".cursorrules")
+	root := FindRootWith(a.fs, cwd, ".cursorrules")
+	if root == "" {
+		root = cwd
+	}
+	target := filepath.Join(root, ".cursorrules")
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
 
 func (a *CursorAdapter) Clean(cwd string) error {
-	target := filepath.Join(cwd, ".cursorrules")
+	root := FindRootWith(a.fs, cwd, ".cursorrules")
+	if root == "" {
+		root = cwd
+	}
+	target := filepath.Join(root, ".cursorrules")
 	injector := NewInjector(a.fs)
 	return injector.Clean(target)
 }

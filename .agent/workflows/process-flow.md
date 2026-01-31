@@ -2,8 +2,6 @@
 description: Universal Agent Protocol v12 (Production Standards & Autonomous Logic)
 ---
 
-
-
 # Universal Agent Protocol v12 (Production First & Autonomous)
 
 **CONTEXT**: This is a **GENERAL WORKFLOW** applicable to ANY project (Web App, CLI, Backend, etc.). Adopt these principles universally.

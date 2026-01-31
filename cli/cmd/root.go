@@ -46,4 +46,6 @@ func initConfig() {
 		// Create it if missing (simplified for Stub)
 		os.Create(home + "/.arsenal.yaml")
 	}
+
+	viper.AutomaticEnv() // Read in environment variables that match
 }
