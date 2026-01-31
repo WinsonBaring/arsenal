@@ -27,20 +27,40 @@ func (a *AntigravityAdapter) Detect(cwd string) bool {
 func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) (string, error) {
 	root := FindRootWith(a.fs, cwd, ".agent")
 	if root == "" {
-		root = cwd // Fallback to current dir if not found (shouldn't happen if Detect passed)
-	}
-	
-	// Ensure skills directory exists
-	skillsDir := filepath.Join(root, ".agent", "skills")
-	if err := a.fs.MkdirAll(skillsDir, 0755); err != nil {
-		return "", err
+		root = cwd
 	}
 
-	// We inject into .agent/skills/arsenal_generated_rules.md
-	target := filepath.Join(skillsDir, "arsenal_generated_rules.md")
+	// Group prompts by category
+	grouped := make(map[string][]api.Prompt)
+	for _, p := range prompts {
+		cat := p.Category
+		if cat == "" {
+			cat = "general"
+		}
+		grouped[cat] = append(grouped[cat], p)
+	}
+
+	var modifiedPaths []string
 	injector := NewInjector(a.fs)
-	err := injector.Inject(target, prompts)
-	return target, err
+
+	for cat, subPrompts := range grouped {
+		safeCat := SanitizeName(cat)
+		// Structure: .agent/skills/<category>/SKILL.md
+		skillDir := filepath.Join(root, ".agent", "skills", safeCat)
+		
+		if err := a.fs.MkdirAll(skillDir, 0755); err != nil {
+			return "", err
+		}
+
+		target := filepath.Join(skillDir, "SKILL.md")
+		if err := injector.Inject(target, subPrompts); err != nil {
+			return "", err
+		}
+		modifiedPaths = append(modifiedPaths, target)
+	}
+
+	// Join all paths for the return message
+	return filepath.Join(modifiedPaths...), nil
 }
 
 func (a *AntigravityAdapter) Clean(cwd string) error {

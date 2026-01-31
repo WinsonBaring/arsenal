@@ -88,7 +88,12 @@ func (m SelectionModel) View() string {
 			checked = "[x]"
 		}
 
-		label := fmt.Sprintf("%s %s %s", cursor, checked, p.Name)
+	catStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+		cat := p.Category
+		if cat == "" {
+			cat = "General"
+		}
+		label := fmt.Sprintf("%s %s %s %s", cursor, checked, p.Name, catStyle.Render("["+cat+"]"))
 		if m.Cursor == i {
 			s += selectedStyle.Render(label) + "\n"
 		} else {
