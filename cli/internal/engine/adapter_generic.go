@@ -23,10 +23,11 @@ func (a *GenericAdapter) Detect(cwd string) bool {
 	return true
 }
 
-func (a *GenericAdapter) Inject(cwd string, prompts []api.Prompt) error {
+func (a *GenericAdapter) Inject(cwd string, prompts []api.Prompt) (string, error) {
 	target := filepath.Join(cwd, "arsenal_prompts.md")
 	injector := NewInjector(a.fs)
-	return injector.Inject(target, prompts)
+	err := injector.Inject(target, prompts)
+	return target, err
 }
 
 func (a *GenericAdapter) Clean(cwd string) error {

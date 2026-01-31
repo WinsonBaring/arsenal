@@ -24,7 +24,7 @@ func (a *AntigravityAdapter) Detect(cwd string) bool {
 	return root != ""
 }
 
-func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) error {
+func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) (string, error) {
 	root := FindRootWith(a.fs, cwd, ".agent")
 	if root == "" {
 		root = cwd // Fallback to current dir if not found (shouldn't happen if Detect passed)
@@ -33,13 +33,14 @@ func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	// Ensure skills directory exists
 	skillsDir := filepath.Join(root, ".agent", "skills")
 	if err := a.fs.MkdirAll(skillsDir, 0755); err != nil {
-		return err
+		return "", err
 	}
 
 	// We inject into .agent/skills/arsenal_generated_rules.md
 	target := filepath.Join(skillsDir, "arsenal_generated_rules.md")
 	injector := NewInjector(a.fs)
-	return injector.Inject(target, prompts)
+	err := injector.Inject(target, prompts)
+	return target, err
 }
 
 func (a *AntigravityAdapter) Clean(cwd string) error {

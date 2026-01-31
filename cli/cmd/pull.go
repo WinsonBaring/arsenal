@@ -65,7 +65,7 @@ var pullCmd = &cobra.Command{
 
 		// 5. Inject (Effect)
 		fmt.Println("💉 Injecting prompts...")
-		err = adapter.Inject(cwd, selectedPrompts)
+		path, err := adapter.Inject(cwd, selectedPrompts)
 		if err != nil {
 			fmt.Printf("❌ Error injecting prompts using %s adapter: %v\n", adapter.Name(), err)
 			return
@@ -82,7 +82,7 @@ var pullCmd = &cobra.Command{
 		data, _ := json.MarshalIndent(newConfig, "", "  ")
 		afero.WriteFile(appFs, configPath, data, 0644)
 
-		fmt.Println("\n✅ Successfully wrote prompts to disk.")
+		fmt.Printf("\n✅ Successfully wrote prompts to: %s\n", path)
 		fmt.Println("💾 Saved selection to arsenal.json")
 	},
 }

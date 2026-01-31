@@ -10,7 +10,8 @@ type AgentAdapter interface {
 	Detect(cwd string) bool
 	
 	// Inject writes the prompts to the agent's specific configuration file(s)
-	Inject(cwd string, prompts []api.Prompt) error
+	// Returns the path to the main file modified, or error
+	Inject(cwd string, prompts []api.Prompt) (string, error)
 
 	// Clean removes any injected prompts
 	Clean(cwd string) error

@@ -25,7 +25,7 @@ func (a *WindsurfAdapter) Detect(cwd string) bool {
 	return rootRules != "" || rootDir != ""
 }
 
-func (a *WindsurfAdapter) Inject(cwd string, prompts []api.Prompt) error {
+func (a *WindsurfAdapter) Inject(cwd string, prompts []api.Prompt) (string, error) {
 	root := FindRootWith(a.fs, cwd, ".windsurfrules")
 	if root == "" {
 		// Try finding .windsurf dir
@@ -36,7 +36,8 @@ func (a *WindsurfAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	}
 	target := filepath.Join(root, ".windsurfrules")
 	injector := NewInjector(a.fs)
-	return injector.Inject(target, prompts)
+	err := injector.Inject(target, prompts)
+	return target, err
 }
 
 func (a *WindsurfAdapter) Clean(cwd string) error {

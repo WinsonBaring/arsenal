@@ -24,14 +24,15 @@ func (a *CursorAdapter) Detect(cwd string) bool {
 	return root != ""
 }
 
-func (a *CursorAdapter) Inject(cwd string, prompts []api.Prompt) error {
+func (a *CursorAdapter) Inject(cwd string, prompts []api.Prompt) (string, error) {
 	root := FindRootWith(a.fs, cwd, ".cursorrules")
 	if root == "" {
 		root = cwd
 	}
 	target := filepath.Join(root, ".cursorrules")
 	injector := NewInjector(a.fs)
-	return injector.Inject(target, prompts)
+	err := injector.Inject(target, prompts)
+	return target, err
 }
 
 func (a *CursorAdapter) Clean(cwd string) error {
