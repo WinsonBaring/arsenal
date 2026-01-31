@@ -16,12 +16,9 @@
 ### 💻 CLI Tool (`/cli`)
 *   **Instant Setup**: `npx arsenal` handles installation and secure authentication.
 *   **One-Command Sync**: Run `arsenal pull` to fetch your latest configurations.
-*   **Interactive Agent Selection**: Choose your target environment:
-    *   Antigravity
-    *   Claude
-    *   Windsurf
-    *   Cursor
+*   **Smart Agent Detection**: Automatically detects if you are using Cursor, Windsurf, or Antigravity and configures the environment accordingly.
 *   **Scoped Configuration**: Install prompts at the **Project** level (local `.arsenal`) or **User** level (global).
+*   **Full Lifecycle**: Use `arsenal clean` to remove injected prompts when done.
 
 ### 🌐 Web Interface (`/web`)
 *   **Prompt Marketplace**: Browse, organize, and manage your personal prompt library.
@@ -46,7 +43,14 @@ Install the CLI to sync your prompts:
 npx arsenal login
 
 # Pull configurations into your current project
+# Pull configurations into your current project
 arsenal pull
+
+# List currently installed prompts
+arsenal list
+
+# Remove injected prompts
+arsenal clean
 ```
 
 **Interactive Demo:**
@@ -58,11 +62,9 @@ arsenal pull
   [ ] Experimental
   [x] Debugging Tools
 
-? Select Target Agent: ›
-  ❯ Antigravity
-    Claude
-    Windsurf
-    Cursor
+🔍 Detected Agent: Cursor
+💉 Injecting prompts into .cursorrules...
+✅ Successfully wrote prompts to disk.
 ```
 
 ---
