@@ -20,17 +20,18 @@
 - [x] **Setup**: Install dependencies (`cobra`, `viper`, `bubbletea`).
 - [x] **Auth**: [Issue #2] Implement `arsenal login` (Device Flow + Token Storage).
 - [x] **Logic**: [Issue #2] Implement `arsenal pull` with **Adapter Strategy**.
-    - [ ] `Adapter` Interface.
-    - [ ] `CursorAdapter` implementation.
-    - [ ] `WindsurfAdapter` implementation.
+    - [x] `Adapter` Interface.
+    - [x] `CursorAdapter` implementation.
+    - [x] `WindsurfAdapter` implementation.
 - [x] **UI**: [Issue #3] Build Interactive TUI (spinners, checklists).
 - [x] **Persistance**: [Issue #3] Save local config to `arsenal.json`.
+- [x] **Maintenance**: [Issue #3.5] Implement `arsenal clean` command.
 
 ## Phase 4: [Issue #4] Web Interface Implementation
-- [ ] **Setup**: Verify Vite + Tailwind v4 + Shadcn setup.
-- [ ] **Dashboard**: Build "My Library" view.
-- [ ] **Editor**: Build Markdown Editor with Frontmatter support.
-- [ ] **Marketplace**: Build "Public Prompts" view.
+- [x] **Setup**: Verify Vite + Tailwind v4 + Shadcn setup.
+- [x] **Dashboard**: Build "My Library" view.
+- [x] **Editor**: Build Markdown Editor with Frontmatter support.
+- [x] **Marketplace**: Build "Public Prompts" view.
 
 ## Phase 5: Documentation & Polish
 - [x] Draft `README.md` (Landing Page).

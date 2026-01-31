@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Save, ArrowLeft, Eye, Code, FileText, Tag } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { parseFrontMatter } from "@/lib/frontmatter";
+import { usePrompts } from "@/lib/storage";
 
 const DEFAULT_CONTENT = `---
 name: My New Prompt
@@ -15,13 +16,55 @@ category: Coding
 You are an expert software engineer...`;
 
 export function Editor() {
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const { prompts, addPrompt, updatePrompt } = usePrompts();
+    const id = searchParams.get("id");
+
     const [content, setContent] = useState(DEFAULT_CONTENT);
     const [mode, setMode] = useState<"write" | "preview">("write");
     const [parsed, setParsed] = useState(parseFrontMatter(DEFAULT_CONTENT));
 
     useEffect(() => {
+        if (id) {
+            const found = prompts.find(p => p.id === id);
+            if (found) {
+                setContent(`${found.content}`); // In real app, reconstruct frontmatter
+            }
+        }
+    }, [id, prompts]);
+
+    useEffect(() => {
         setParsed(parseFrontMatter(content));
     }, [content]);
+
+    const handleSave = () => {
+        if (id) {
+            // In real app we would reconstruct the file, but here we just pass the raw content assuming it has frontmatter
+            // Actually, storage saves 'content' as string, so this overrides.
+            // We need to sync frontmatter name/category too
+            updatePrompt(id, {
+                name: parsed.data.name || "Untitled",
+                category: parsed.data.category || "General",
+                content: content,
+                lastUpdated: new Date().toISOString()
+            });
+            alert("Saved!");
+        } else {
+            const newId = crypto.randomUUID();
+            addPrompt({
+                id: newId,
+                name: parsed.data.name || "Untitled",
+                category: parsed.data.category || "General",
+                content: content,
+                author: "You",
+                version: "0.0.1",
+                lastUpdated: new Date().toISOString()
+            });
+            alert("Created!");
+            navigate(`/editor?id=${newId}`);
+        }
+    };
 
     return (
         <div className="h-full flex flex-col">
@@ -61,7 +104,7 @@ export function Editor() {
                             <Eye className="w-4 h-4" /> Preview
                         </button>
                     </div>
-                    <button className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 transition-colors font-medium text-sm">
+                    <button onClick={handleSave} className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 transition-colors font-medium text-sm">
                         <Save className="w-4 h-4" /> Save
                     </button>
                 </div>

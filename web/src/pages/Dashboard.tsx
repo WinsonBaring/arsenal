@@ -1,8 +1,10 @@
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePrompts } from "@/lib/storage";
 
 export function Dashboard() {
     const navigate = useNavigate();
+    const { prompts } = usePrompts();
 
     return (
         <div>
@@ -20,17 +22,21 @@ export function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Mock Content */}
-                {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="p-6 rounded-lg border border-border bg-card hover:border-zinc-700 transition-all cursor-pointer group">
+                {prompts.map((p) => (
+                    <div key={p.id} onClick={() => navigate(`/editor?id=${p.id}`)} className="p-6 rounded-lg border border-border bg-card hover:border-zinc-700 transition-all cursor-pointer group">
                         <div className="flex justify-between items-start mb-4">
                             <div className="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-white group-hover:bg-purple-500/10 group-hover:text-purple-400 transition-colors">
                                 #
                             </div>
-                            <span className="text-xs text-zinc-500 font-mono">v1.0.{i}</span>
+                            <span className="text-xs text-zinc-500 font-mono">v{p.version}</span>
                         </div>
-                        <h3 className="font-semibold text-white mb-2">React Expert Guidelines</h3>
-                        <p className="text-sm text-zinc-400 line-clamp-2">A set of strict rules for writing performant React code, including useEffect cleanup.</p>
+                        <h3 className="font-semibold text-white mb-2">{p.name}</h3>
+                        <p className="text-sm text-zinc-400 line-clamp-2">{p.content.slice(0, 100)}...</p>
+                        {p.category && (
+                            <span className="inline-block mt-3 text-xs bg-zinc-900 border border-zinc-800 px-2 py-1 rounded-full text-zinc-500">
+                                {p.category}
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>

@@ -1,4 +1,5 @@
 import { LayoutDashboard, Library, Settings, Wallet, Box } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -6,11 +7,12 @@ interface SidebarProps {
 }
 
 export function Sidebar({ className }: SidebarProps) {
+    const location = useLocation();
     const navItems = [
-        { icon: Library, label: "My Library", active: true },
-        { icon: Wallet, label: "Marketplace", active: false },
-        { icon: LayoutDashboard, label: "Collections", active: false },
-        { icon: Settings, label: "Settings", active: false },
+        { icon: Library, label: "My Library", path: "/", active: true },
+        { icon: Wallet, label: "Marketplace", path: "/marketplace", active: false },
+        { icon: LayoutDashboard, label: "Collections", path: "/", active: false },
+        { icon: Settings, label: "Settings", path: "/", active: false },
     ];
 
     return (
@@ -23,18 +25,19 @@ export function Sidebar({ className }: SidebarProps) {
             <div className="flex-1 py-6 px-3">
                 <div className="space-y-1">
                     {navItems.map((item) => (
-                        <button
+                        <Link
                             key={item.label}
+                            to={item.path}
                             className={cn(
                                 "w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                                item.active
+                                location.pathname === item.path
                                     ? "bg-secondary text-white"
                                     : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
                             )}
                         >
                             <item.icon className="w-4 h-4 mr-3" />
                             {item.label}
-                        </button>
+                        </Link>
                     ))}
                 </div>
             </div>
