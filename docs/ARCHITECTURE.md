@@ -11,47 +11,37 @@ The system is a Monorepo composed of two primary artifacts:
 
 ```mermaid
 graph TD
-    subgraph "Cloud / Storage"
-        Repo[Prompt Repository\n(Git + Markdown)]
+    subgraph "Cloud Infrastructure"
+        Neon[Neon Postgres DB]
+        VercelFn[Vercel Functions\n(/api/prompts)]
     end
 
-    subgraph "Web Interface (Management)"
+    subgraph "Web Interface"
         Dashboard[My Library]
         Editor[Markdown Editor]
-        Marketplace[Community Hub]
     end
 
-    subgraph "CLI (Consumption)"
+    subgraph "CLI"
         PullCmd[arsenal pull]
-        CleanCmd[arsenal clean]
-        Adapter[Adapter Strategy]
     end
 
-    subgraph "Target Environment"
-        IDE_Cursor[.cursorrules]
-        IDE_Windsurf[.windsurfrules]
-        IDE_Antigravity[.agent/rules]
-    end
-
-    Dashboard -- Reads/Writes --> Repo
-    Editor -- Authors --> Repo
-    PullCmd -- Fetches --> Repo
-    PullCmd -- Uses --> Adapter
-    Adapter -- Detects --> IDE_Cursor & IDE_Windsurf & IDE_Antigravity
-    Adapter -- "Injects" --> IDE_Cursor & IDE_Windsurf & IDE_Antigravity
-    CleanCmd -- Removes --> IDE_Cursor & IDE_Windsurf & IDE_Antigravity
+    Dashboard -- HTTPS --> VercelFn
+    Editor -- HTTPS --> VercelFn
+    PullCmd -- HTTPS --> VercelFn
+    VercelFn -- SQL --> Neon
 ```
 
 ## 2. Core Components
 
 ### 2.1 Web Application
 *   **Tech Stack**: React 19, Vite, Tailwind CSS v4, Shadcn/UI, Lucide Icons.
-*   **State Management**: React Query (Planned) / LocalStorage (Current Mock).
+*   **Backend**: Vercel Serverless Functions (`/api`).
+*   **Database**: Neon Serverless Postgres.
 *   **Routing**: React Router v7.
-*   **Editor**: `react-markdown` + Frontmatter parsing.
 
 ### 2.2 CLI Tool
-*   **Tech Stack**: Go 1.23+, Cobra (Command Structure), Viper (Config), Bubbletea (TUI).
+*   **Tech Stack**: Go 1.23+, Cobra, Viper, Bubbletea.
+*   **API Client**: Fetches prompts from the Vercel-deployed API (Production) or localhost (Dev).
 *   **Pattern**: Adapter Design Pattern.
     *   **Goal**: Decouple the core "Pull" logic from the specific syntax required by different AI agents.
     *   **Interface**: `AgentAdapter` (Detect, Name, Inject, Clean).
@@ -59,22 +49,22 @@ graph TD
 
 ## 3. Data Model
 
-Prompts are stored as **Markdown files** with YAML Frontmatter. The "Single Source of Truth" is the file itself.
+Prompts are stored in **PostgreSQL (Neon)**.
 
-**Schema:**
-```markdown
----
-id: string (uuid)
-name: string
-description: string
-author: string
-version: string (semver)
-tags: string[]
-lastUpdated: iso8601
----
-
-# Prompt Content
-...
+**Schema (`prompts` table):**
+```sql
+CREATE TABLE prompts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    description TEXT,
+    content TEXT NOT NULL,
+    category TEXT,
+    author TEXT,
+    version TEXT,
+    tags TEXT[],
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
 ## 4. Security

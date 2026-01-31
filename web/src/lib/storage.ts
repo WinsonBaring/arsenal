@@ -5,57 +5,105 @@ export interface Prompt {
     name: string;
     content: string;
     category: string;
+    description?: string;
     author?: string;
     version: string;
     lastUpdated: string;
+    tags?: string[];
 }
 
-const STORAGE_KEY = "arsenal_prompts";
-
-const DEFAULT_PROMPTS: Prompt[] = [
-    {
-        id: "local-1",
-        name: "React Expert Guidelines",
-        category: "Frontend",
-        content: "# React Guidelines\n\n- Use functional components.\n- Prefer hooks.",
-        version: "1.0.0",
-        lastUpdated: new Date().toISOString(),
-    }
-];
-
 export function usePrompts() {
-    const [prompts, setPrompts] = useState<Prompt[]>(() => {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : DEFAULT_PROMPTS;
-    });
+    const [prompts, setPrompts] = useState<Prompt[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts));
-    }, [prompts]);
+    const fetchPrompts = async () => {
+        try {
+            setLoading(true);
+            const res = await fetch('/api/prompts');
+            if (!res.ok) {
+                // Fallback if API is not running (e.g. standard vite dev)
+                console.warn("API not available, falling back to empty list");
+                setError("API not available. Run 'vercel dev' to enable backend.");
+                return;
+            }
+            const data = await res.json();
 
-    const addPrompt = (prompt: Prompt) => {
-        setPrompts(prev => [prompt, ...prev]);
-    };
-
-    const updatePrompt = (id: string, updates: Partial<Prompt>) => {
-        setPrompts(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
-    };
-
-    const reinstallPrompt = (promptFromMarketplace: any) => {
-        const newPrompt: Prompt = {
-            id: promptFromMarketplace.id,
-            name: promptFromMarketplace.name,
-            category: promptFromMarketplace.tags[0] || "General",
-            content: promptFromMarketplace.description + "\n\n(Imported content)",
-            author: promptFromMarketplace.author,
-            version: "1.0.0",
-            lastUpdated: new Date().toISOString(),
-        };
-        // Avoid duplicates by ID
-        if (!prompts.find(p => p.id === newPrompt.id)) {
-            addPrompt(newPrompt);
+            setPrompts(data.map((p: any) => ({
+                id: p.id,
+                name: p.name,
+                content: p.content,
+                category: p.category || "Uncategorized",
+                description: p.description || "",
+                author: p.author || "Unknown",
+                version: p.version || "1.0.0",
+                lastUpdated: p.updated_at || p.created_at || new Date().toISOString(),
+                tags: p.tags || []
+            })));
+            setError(null);
+        } catch (err) {
+            console.error("Fetch error:", err);
+            setError(err instanceof Error ? err.message : "Failed to load prompts");
+        } finally {
+            setLoading(false);
         }
     };
 
-    return { prompts, addPrompt, updatePrompt, reinstallPrompt };
+    useEffect(() => {
+        fetchPrompts();
+    }, []);
+
+    const addPrompt = async (prompt: Partial<Prompt>) => {
+        try {
+            const res = await fetch('/api/prompts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: prompt.name || "Untitled",
+                    content: prompt.content || "",
+                    category: prompt.category || "General",
+                    description: prompt.description || "",
+                    author: "User",
+                    version: "1.0.0",
+                    tags: prompt.tags || []
+                }),
+            });
+            if (!res.ok) throw new Error('Failed to save');
+            await fetchPrompts();
+            return true;
+        } catch (err) {
+            console.error(err);
+            alert("Failed to save: " + (err instanceof Error ? err.message : "Unknown error"));
+            return false;
+        }
+    };
+
+    const updatePrompt = async (id: string, updates: Partial<Prompt>) => {
+        try {
+            const res = await fetch('/api/prompts', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, ...updates }),
+            });
+            if (!res.ok) throw new Error('Failed to update');
+            await fetchPrompts();
+            return true;
+        } catch (err) {
+            console.error(err);
+            alert("Failed to update");
+            return false;
+        }
+    };
+
+    const reinstallPrompt = async (promptFromMarketplace: any) => {
+        await addPrompt({
+            name: promptFromMarketplace.name + " (Copy)",
+            category: promptFromMarketplace.category,
+            content: promptFromMarketplace.content,
+            description: promptFromMarketplace.description,
+            tags: ["installed"]
+        });
+    };
+
+    return { prompts, loading, error, addPrompt, updatePrompt, reinstallPrompt, refresh: fetchPrompts };
 }
