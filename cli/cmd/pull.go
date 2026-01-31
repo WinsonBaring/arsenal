@@ -26,16 +26,20 @@ var pullCmd = &cobra.Command{
 		adapter := engine.GetPrioritizedAdapter(appFs, cwd)
 		fmt.Printf("🔍 Detected Agent: %s\n", adapter.Name())
 
-		// 2. Fetch Prompts (Mock)
-		client := &api.MockClient{}
+		// 2. Fetch Prompts (Real API)
+		// TODO: Make base URL configurable via flag or env
+		client := api.NewHTTPClient("http://localhost:3000") // Connects to local Vercel dev
 		token := viper.GetString("auth_token")
-		if token == "" {
-			fmt.Println("❌ Not authenticated. Run 'arsenal login' first.")
+
+		// Bypass auth check for now to allow testing without login
+		// if token == "" { ... }
+		
+		fmt.Println("☁️  Fetching prompts from Web API...")
+		promptSet, err := client.FetchUserPrompts(token)
+		if err != nil {
+			fmt.Printf("❌ Failed to fetch prompts: %v\n", err)
 			return
 		}
-		
-		fmt.Println("☁️  Fetching prompts...")
-		promptSet, _ := client.FetchUserPrompts(token)
 
 		// 3. Load Local Config (arsenal.json)
 		configPath := filepath.Join(cwd, "arsenal.json")
