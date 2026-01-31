@@ -12,13 +12,8 @@ import (
 	"github.com/winsonbaring/arsenal/cli/internal/engine"
 	"github.com/winsonbaring/arsenal/cli/internal/tui"
 	"github.com/winsonbaring/arsenal/cli/pkg/api"
+	"github.com/winsonbaring/arsenal/cli/pkg/config"
 )
-
-// ProjectConfig represents arsenal.json
-type ProjectConfig struct {
-	RemoteSets []string `json:"remote_sets"`
-	Selected   []string `json:"selected_prompts"`
-}
 
 var pullCmd = &cobra.Command{
 	Use:   "pull",
@@ -27,10 +22,9 @@ var pullCmd = &cobra.Command{
 		cwd, _ := os.Getwd()
 		appFs := afero.NewOsFs()
 
-		// 1. Detect Agent
-		detector := engine.NewDetector(appFs)
-		agent := detector.Detect(cwd)
-		fmt.Printf("🔍 Detected Agent: %s\n", agent)
+// 1. Detect Agent (Adapter Strategy)
+		adapter := engine.GetPrioritizedAdapter(appFs, cwd)
+		fmt.Printf("🔍 Detected Agent: %s\n", adapter.Name())
 
 		// 2. Fetch Prompts (Mock)
 		client := &api.MockClient{}
@@ -48,7 +42,7 @@ var pullCmd = &cobra.Command{
 		var preselected []string
 		if exists, _ := afero.Exists(appFs, configPath); exists {
 			data, _ := afero.ReadFile(appFs, configPath)
-			var cfg ProjectConfig
+			var cfg config.ProjectConfig
 			json.Unmarshal(data, &cfg)
 			preselected = cfg.Selected
 		}
@@ -66,13 +60,10 @@ var pullCmd = &cobra.Command{
 		}
 
 		// 5. Inject (Effect)
-		targetPath := detector.GetRulesPath(cwd, agent)
-		fmt.Printf("🎯 Target Path: %s\n", targetPath)
-		
-		injector := engine.NewInjector(appFs)
-		err = injector.Inject(targetPath, selectedPrompts)
+		fmt.Println("💉 Injecting prompts...")
+		err = adapter.Inject(cwd, selectedPrompts)
 		if err != nil {
-			fmt.Printf("❌ Error injecting prompts: %v\n", err)
+			fmt.Printf("❌ Error injecting prompts using %s adapter: %v\n", adapter.Name(), err)
 			return
 		}
 
@@ -81,7 +72,7 @@ var pullCmd = &cobra.Command{
 		for _, p := range selectedPrompts {
 			newSelectedIDs = append(newSelectedIDs, p.ID)
 		}
-		newConfig := ProjectConfig{
+		newConfig := config.ProjectConfig{
 			Selected: newSelectedIDs,
 		}
 		data, _ := json.MarshalIndent(newConfig, "", "  ")
