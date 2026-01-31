@@ -66,6 +66,39 @@ func (i *Injector) Inject(targetPath string, prompts []api.Prompt) error {
 		content += newBlock
 	}
 
-	// 4. Write Back
+// 4. Write Back
 	return afero.WriteFile(i.FS, targetPath, []byte(content), 0644)
+}
+
+// Clean removes the managed block from the target file
+func (i *Injector) Clean(targetPath string) error {
+	exists, _ := afero.Exists(i.FS, targetPath)
+	if !exists {
+		return nil // Nothing to clean
+	}
+
+	b, err := afero.ReadFile(i.FS, targetPath)
+	if err != nil {
+		return err
+	}
+	content := string(b)
+
+	startIdx := strings.Index(content, BlockStart)
+	endIdx := strings.Index(content, BlockEnd)
+
+	if startIdx == -1 || endIdx == -1 {
+		return nil // Block not found
+	}
+
+	// Calculate range to remove
+	endIdx += len(BlockEnd)
+	// Optionally remove trailing newline if it looks like we added one
+	if endIdx < len(content) && content[endIdx] == '\n' {
+		endIdx++
+	}
+
+	// Keep everything before start and after end
+	newContent := content[:startIdx] + content[endIdx:]
+
+	return afero.WriteFile(i.FS, targetPath, []byte(newContent), 0644)
 }

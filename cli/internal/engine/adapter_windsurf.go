@@ -30,3 +30,9 @@ func (a *WindsurfAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
+
+func (a *WindsurfAdapter) Clean(cwd string) error {
+	target := filepath.Join(cwd, ".windsurfrules")
+	injector := NewInjector(a.fs)
+	return injector.Clean(target)
+}

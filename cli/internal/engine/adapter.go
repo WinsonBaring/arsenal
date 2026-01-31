@@ -11,4 +11,7 @@ type AgentAdapter interface {
 	
 	// Inject writes the prompts to the agent's specific configuration file(s)
 	Inject(cwd string, prompts []api.Prompt) error
+
+	// Clean removes any injected prompts
+	Clean(cwd string) error
 }

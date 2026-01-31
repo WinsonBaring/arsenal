@@ -29,3 +29,9 @@ func (a *CursorAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
+
+func (a *CursorAdapter) Clean(cwd string) error {
+	target := filepath.Join(cwd, ".cursorrules")
+	injector := NewInjector(a.fs)
+	return injector.Clean(target)
+}

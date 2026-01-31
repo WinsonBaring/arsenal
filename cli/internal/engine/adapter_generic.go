@@ -28,3 +28,9 @@ func (a *GenericAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
+
+func (a *GenericAdapter) Clean(cwd string) error {
+	target := filepath.Join(cwd, "arsenal_prompts.md")
+	injector := NewInjector(a.fs)
+	return injector.Clean(target)
+}

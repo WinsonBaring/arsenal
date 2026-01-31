@@ -30,3 +30,9 @@ func (a *AntigravityAdapter) Inject(cwd string, prompts []api.Prompt) error {
 	injector := NewInjector(a.fs)
 	return injector.Inject(target, prompts)
 }
+
+func (a *AntigravityAdapter) Clean(cwd string) error {
+	target := filepath.Join(cwd, ".agent", "arsenal_generated_rules.md")
+	injector := NewInjector(a.fs)
+	return injector.Clean(target)
+}
