@@ -36,6 +36,18 @@ arsenal pull
 *   **Safety**: Uses **Block Injection** (`# BEGIN ARSENAL ... # END ARSENAL`) to ensure it never overwrites your manual rules.
 *   **Persistence**: Saves your selections to `arsenal.json` in the project root, so next time you run `pull`, your preferences are remembered.
 
+### 3. List Configuration
+See what prompts are currently installed in the project.
+```bash
+arsenal list
+```
+
+### 4. Clean/Reset
+Remove all Arsenal-injected prompts from your project files. This is useful when you want to "eject" or simply clean up.
+```bash
+arsenal clean
+```
+
 ## 🛠️ Architecture
 
 *   **Language**: Go
