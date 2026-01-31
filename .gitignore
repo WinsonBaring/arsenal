@@ -1,0 +1,30 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Binaries
+bin/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.aimless
+.agent/
+!.agent/workflows/
+!.agent/suggestions/
+
+# Arsenal Specific
+arsenal.json
+arsenal_prompts.md

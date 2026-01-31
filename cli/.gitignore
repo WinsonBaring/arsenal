@@ -1,0 +1,7 @@
+# Binaries
+arsenal
+main
+
+# Go
+vendor/
+go.sum

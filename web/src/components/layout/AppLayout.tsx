@@ -1,17 +1,29 @@
 import { Sidebar } from "./Sidebar";
+import { useLocation } from "react-router-dom";
 
 interface AppLayoutProps {
     children: React.ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
+    const location = useLocation();
+
+    // Simple breadcrumb logic
+    const getBreadcrumb = () => {
+        const path = location.pathname;
+        if (path === "/") return "My Library";
+        if (path === "/marketplace") return "Marketplace";
+        if (path === "/editor") return "Editor";
+        return "Dashboard";
+    };
+
     return (
         <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
             <Sidebar />
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Glassmorphic Header */}
                 <header className="h-14 border-b border-border glass flex items-center justify-between px-6 shrink-0 z-10 sticky top-0">
-                    <h1 className="text-sm font-medium text-zinc-400">Dashboard / <span className="text-white">Analysis</span></h1>
+                    <h1 className="text-sm font-medium text-zinc-400">Dashboard / <span className="text-white">{getBreadcrumb()}</span></h1>
                     <div className="flex gap-2">
                         {/* Actions will go here */}
                     </div>
