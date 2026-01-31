@@ -23,10 +23,11 @@
     - [ ] `Adapter` Interface.
     - [ ] `CursorAdapter` implementation.
     - [ ] `WindsurfAdapter` implementation.
-- [ ] **UI**: [Issue #3] Build Interactive TUI (spinners, checklists).
-- [ ] **Persistance**: [Issue #3] Save local config to `arsenal.json`.
+- [x] **UI**: [Issue #3] Build Interactive TUI (spinners, checklists).
+- [x] **Persistance**: [Issue #3] Save local config to `arsenal.json`.
 
-## Phase 4: Web Interface Implementation
+## Phase 4: [Issue #4] Web Interface Implementation
+- [ ] **Setup**: Verify Vite + Tailwind v4 + Shadcn setup.
 - [ ] **Dashboard**: Build "My Library" view.
 - [ ] **Editor**: Build Markdown Editor with Frontmatter support.
 - [ ] **Marketplace**: Build "Public Prompts" view.

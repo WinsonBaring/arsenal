@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { AppLayout } from "@/components/layout/AppLayout";
+import { Plus } from "lucide-react";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <AppLayout>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-white">My Library</h2>
+          <p className="text-zinc-400 mt-1">Manage your prompt engineered rules.</p>
+        </div>
+        <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-zinc-200 transition-colors font-medium text-sm">
+          <Plus className="w-4 h-4" /> New Prompt
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Mock Content */}
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="p-6 rounded-lg border border-border bg-card hover:border-zinc-700 transition-all cursor-pointer group">
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-white group-hover:bg-purple-500/10 group-hover:text-purple-400 transition-colors">
+                #
+              </div>
+              <span className="text-xs text-zinc-500 font-mono">v1.0.{i}</span>
+            </div>
+            <h3 className="font-semibold text-white mb-2">React Expert Guidelines</h3>
+            <p className="text-sm text-zinc-400 line-clamp-2">A set of strict rules for writing performant React code, including useEffect cleanup.</p>
+          </div>
+        ))}
+      </div>
+    </AppLayout>
+  );
 }
 
-export default App
+export default App;
