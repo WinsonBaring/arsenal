@@ -6,13 +6,14 @@ import { Login } from './commands/Login.js';
 import { Pull } from './commands/Pull.js';
 import { List } from './commands/List.js';
 import { Clean } from './commands/Clean.js';
+import { Add } from './commands/Add.js';
 import meow from 'meow';
 
-const App = ({ command }: { command: string }) => {
+const App = ({ command, input, flags }: { command: string, input: string[], flags: any }) => {
 	const [activeCommand] = useState(command || 'home');
 
 	useInput((input) => {
-		if (input === 'q') {
+		if (input === 'q' && activeCommand === 'home') {
 			process.exit(0);
 		}
 	});
@@ -29,6 +30,7 @@ const App = ({ command }: { command: string }) => {
 			{activeCommand === 'login' && <Login />}
 			{activeCommand === 'list' && <List />}
 			{activeCommand === 'clean' && <Clean />}
+			{activeCommand === 'add' && <Add repoUrl={input[1] || ''} skillPath={flags.skill} />}
 		</Layout>
 	);
 };
@@ -42,14 +44,22 @@ const cli = meow(
 	  pull  Fetch and inject prompts
 	  login Authenticate with Arsenal
 	  list  List installed prompts
+	  add   Install skills (e.g. arsenal add <url> --skill <path>)
 
 	Examples
 	  $ arsenal pull
 	  $ arsenal login
-`,
+	  $ arsenal add https://github.com/org/repo --skill my-skill
+	`,
 	{
 		importMeta: import.meta,
+		flags: {
+			skill: {
+				type: 'string',
+				shortFlag: 's'
+			}
+		}
 	},
 );
 
-render(<App command={cli.input[0] || 'home'} />);
+render(<App command={cli.input[0] || 'home'} input={cli.input} flags={cli.flags} />);
