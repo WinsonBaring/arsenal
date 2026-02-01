@@ -6,7 +6,8 @@ The **Arsenal Web Hub** is the management interface for your Prompt Engineering 
 *   **My Library**: A dashboard of all your authored prompts.
 *   **Editor**: A full-featured Markdown editor with YAML frontmatter support.
 *   **Marketplace**: A "Community Hub" simulation where you can install shared prompts.
-*   **Mock Persistence**: Uses `localStorage` to save your work, so it persists across reloads (but stays on your machine).
+*   **Real Back-End**: Connected to a Vercel Serverless API and Neon Postgres database for true persistence.
+*   **Premium UI**: Glassmorphic styling with rich animations and toast notifications.
 
 ## 🚀 Getting Started
 
@@ -23,9 +24,13 @@ npm install
 
 ### Running Locally
 
+Ensure you have `vercel dev` running in the root or background to serve the API functions.
+
 ```bash
 npm run dev
 ```
+
+The Vite dev server proxies `/api` requests to `http://localhost:3000` (Vercel).
 
 Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
@@ -38,7 +43,7 @@ Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 ### 2. The Editor
 *   **Write Mode**: Edit the YAML header (for metadata) and the Markdown body.
 *   **Preview Mode**: See how the prompt renders.
-*   **Save**: Persists changes to your browser's local storage.
+*   **Save**: Persists changes to your personal Neon Database via the Vercel API.
 
 ### 3. Marketplace
 *   Browse the list of "community" prompts.

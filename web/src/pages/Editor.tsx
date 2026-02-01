@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Save, ArrowLeft, Eye, Code, FileText, Tag } from "lucide-react";
+import { toast } from "sonner";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { parseFrontMatter } from "@/lib/frontmatter";
 import { usePrompts } from "@/lib/storage";
@@ -18,7 +19,7 @@ You are an expert software engineer...`;
 export function Editor() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { prompts, addPrompt, updatePrompt } = usePrompts();
+    const { prompts } = usePrompts();
     const id = searchParams.get("id");
 
     const [content, setContent] = useState(DEFAULT_CONTENT);
@@ -38,31 +39,58 @@ export function Editor() {
         setParsed(parseFrontMatter(content));
     }, [content]);
 
-    const handleSave = () => {
-        if (id) {
-            // In real app we would reconstruct the file, but here we just pass the raw content assuming it has frontmatter
-            // Actually, storage saves 'content' as string, so this overrides.
-            // We need to sync frontmatter name/category too
-            updatePrompt(id, {
+    const handleSave = async () => {
+        const loadingToast = toast.loading(id ? "Updating prompt..." : "Creating prompt...");
+
+        try {
+            const payload = {
                 name: parsed.data.name || "Untitled",
-                category: parsed.data.category || "General",
+                description: "Created via Web Editor",
                 content: content,
-                lastUpdated: new Date().toISOString()
-            });
-            alert("Saved!");
-        } else {
-            const newId = crypto.randomUUID();
-            addPrompt({
-                id: newId,
-                name: parsed.data.name || "Untitled",
                 category: parsed.data.category || "General",
-                content: content,
-                author: "You",
+                author: "User", // TODO: Get from Auth
                 version: "0.0.1",
-                lastUpdated: new Date().toISOString()
+                tags: []
+            };
+
+            const url = '/api/prompts';
+            const method = id ? 'PUT' : 'POST';
+            const body = id ? { id, ...payload } : payload;
+
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
             });
-            alert("Created!");
-            navigate(`/editor?id=${newId}`);
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                let errorMessage = errorText;
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorMessage = errorJson.error || errorJson.message || errorText;
+                } catch (e) {
+                    // ignore JSON parse error
+                }
+                throw new Error(`${res.status}: ${errorMessage}`);
+            }
+
+            const data = await res.json();
+
+            toast.success(id ? "Prompt updated successfully" : "Prompt created successfully", {
+                id: loadingToast,
+                description: `Saved "${data.name}" to your library.`
+            });
+
+            if (!id && data.id) {
+                navigate(`/editor?id=${data.id}`);
+            }
+        } catch (e: any) {
+            console.error(e);
+            toast.error("Failed to save prompt", {
+                id: loadingToast,
+                description: e.message || "An unexpected error occurred."
+            });
         }
     };
 

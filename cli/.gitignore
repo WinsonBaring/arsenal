@@ -1,7 +1,2 @@
-# Binaries
-arsenal
-main
-
-# Go
-vendor/
-go.sum
+node_modules
+dist

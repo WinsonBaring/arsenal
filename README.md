@@ -36,21 +36,28 @@ Start by organizing your prompts in the Arsenal Web Hub.
 
 ### 2. The CLI Experience (Developer)
 
-Install the CLI to sync your prompts:
+The CLI is now built with **React & Ink**, allowing for a rich TUI experience using web technologies.
+
+#### Prerequisites
+- Node.js 16+
+
+#### Installation & Usage
 
 ```bash
-# Authenticate and setup
-npx arsenal login
+# 1. Enter the CLI directory
+cd cli
 
-# Pull configurations into your current project
-# Pull configurations into your current project
+# 2. Install dependencies & Build
+npm install
+npm run build
+
+# 3. Link globally (Optional but recommended)
+npm link
+
+# 4. Use the CLI
+arsenal login
 arsenal pull
-
-# List currently installed prompts
 arsenal list
-
-# Remove injected prompts
-arsenal clean
 ```
 
 **Interactive Demo:**

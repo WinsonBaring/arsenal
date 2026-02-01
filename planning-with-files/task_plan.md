@@ -15,17 +15,15 @@
 - [x] Install Tailwind CSS v4 for Web.
 - [x] Commit scaffolding.
 
-## Phase 3: [Issue #1] CLI Implementation (Go)
-**Stack**: Cobra, Viper, Bubbletea.
-- [x] **Setup**: Install dependencies (`cobra`, `viper`, `bubbletea`).
-- [x] **Auth**: [Issue #2] Implement `arsenal login` (Device Flow + Token Storage).
-- [x] **Logic**: [Issue #2] Implement `arsenal pull` with **Adapter Strategy**.
-    - [x] `Adapter` Interface.
-    - [x] `CursorAdapter` implementation.
-    - [x] `WindsurfAdapter` implementation.
-- [x] **UI**: [Issue #3] Build Interactive TUI (spinners, checklists).
-- [x] **Persistance**: [Issue #3] Save local config to `arsenal.json`.
-- [x] **Maintenance**: [Issue #3.5] Implement `arsenal clean` command.
+## Phase 3: [Issue #5] CLI Implementation (React/Ink)
+**Stack**: React, Ink, TypeScript.
+- [ ] **Setup**: Initialize Ink project in `/cli`.
+- [ ] **Auth**: Port `login` command.
+- [ ] **Logic**: Port `pull` command with Adapter Strategy.
+- [ ] **UI**: Port Interactive TUI (spinners, checklists).
+- [ ] **Persistance**: Port local config to `arsenal.json`.
+- [ ] **Maintenance**: Port `clean` command.
+- [ ] **Commands**: Port `list` command.
 
 ## Phase 4: [Issue #4] Web Interface Implementation
 - [x] **Setup**: Verify Vite + Tailwind v4 + Shadcn setup.
