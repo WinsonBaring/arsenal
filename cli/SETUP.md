@@ -4,42 +4,37 @@
 - Node.js >= 16
 - npm
 
-## Installation
-The CLI is part of the Arsenal monorepo.
+## Usage (Zero-Install)
+The recommended way to use Arsenal is via `npx`:
 
-1. Navigate to the CLI directory:
-   ```bash
-   cd cli
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Build the project:
-   ```bash
-   npm run build
-   ```
-
-4. Link the binary locally:
-   ```bash
-   npm link
-   ```
-   This exposes the `arsenal` command globally on your system.
-
-## Usage
-Run the CLI using:
 ```bash
-arsenal [command]
+npx arsenal [command]
 ```
 
-Available commands:
+## Manual Installation
+To install globally:
+
+1. Build the project:
+   ```bash
+   cd cli
+   npm install && npm run build
+   ```
+
+2. Link or Install:
+   ```bash
+   npm link
+   # OR
+   npm install -g .
+   ```
+
+## Commands
 - `login`: Authenticate with your Personal Access Token.
-- `pull`: Fetch and inject prompts.
+- `pull`: **(Interactive)** Select your Agent (Cursor, Windsurf, etc.) and fetch prompts.
+- `add`: Install remote skills via URL (`npx arsenal add <url> --skill <path>`).
 - `list`: Show prompt injection status.
 - `clean`: Remove injected prompts.
 
 ## Development
 - Watch mode: `npm run dev`
 - Tests: `npm test`
+

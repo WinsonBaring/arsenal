@@ -2,17 +2,26 @@
 
 The command-line interface for Arsenal, built with TypeScript, React, and [Ink](https://github.com/vadimdemedes/ink).
 
-## Installation
+## Quick Start (Zero-Install)
+
+Run Arsenal instantly without installing it globally:
 
 ```bash
-# Link locally
-$ npm link
+npx arsenal <command>
+```
+
+## Installation (Optional)
+
+If you use Arsenal frequently, you can install it globally:
+
+```bash
+npm install -g arsenal
 ```
 
 ## Usage
 
 ```bash
-$ arsenal [command]
+$ npx arsenal [command]
 ```
 
 ### Commands
@@ -21,29 +30,40 @@ $ arsenal [command]
 Interactively authenticates using your Personal Access Token.
 
 ```bash
-$ arsenal login
+$ npx arsenal login
 ```
 
 #### `pull`
-Fetches available prompts from your Arsenal library and lets you select which ones to inject into your project config (e.g., `.cursorrules`).
+Fetches available prompts and guides you through the Agent Wizard to select your target agent (e.g. Cursor, Windsurf) and inject rules.
 
 ```bash
-$ arsenal pull
+$ npx arsenal pull
 ```
-*Note: Use Space to toggle selection, Enter to confirm.*
+*Note: Follow the wizard to select your agent and prompts.*
 
 #### `list`
 Checks the current status of injected prompts in your configuration file.
 
 ```bash
-$ arsenal list
+$ npx arsenal list
+```
+
+#### `add`
+Install a skill directly from a GitHub repository URL.
+
+```bash
+$ npx arsenal add <repo-url> --skill <path/to/skill>
+```
+*Example:*
+```bash
+$ npx arsenal add https://github.com/winsonbaring/arsenal --skill skills/react-expert
 ```
 
 #### `clean`
 Removes any Arsenal-injected prompt blocks from your configuration file.
 
 ```bash
-$ arsenal clean
+$ npx arsenal clean
 ```
 
 ## Development
@@ -58,3 +78,4 @@ $ npm run dev -- [command]
 # Build
 $ npm run build
 ```
+
