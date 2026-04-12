@@ -1,0 +1,44 @@
+name: Arsenal CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web-validate:
+    runs-on: linux
+    steps:
+      - name: Validate node toolchain
+        run: |
+          set -euo pipefail
+          if ! command -v node >/dev/null 2>&1; then
+            echo "node is required on runner image" >&2
+            exit 1
+          fi
+          if ! command -v npm >/dev/null 2>&1; then
+            echo "npm is required on runner image" >&2
+            exit 1
+          fi
+
+      - name: Install root deps
+        run: npm ci
+
+      - name: Lint web
+        run: npm run lint --workspace=web
+
+      - name: Build web
+        run: npm run build --workspace=web
+
+  ci-gate:
+    name: ci-gate
+    runs-on: linux
+    needs: [web-validate]
+    steps:
+      - name: Enforce CI gate
+        run: |
+          if [ "${{ needs.web-validate.result }}" != "success" ]; then
+            echo "ci-gate failed"
+            exit 1
+          fi
+          echo "ci-gate passed"
