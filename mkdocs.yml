@@ -1,0 +1,6 @@
+site_name: Arsenal
+docs_dir: docs
+nav:
+  - Home: USER_GUIDE.md
+  - Architecture: ARCHITECTURE.md
+  - CLI Reference: CLI_REFERENCE.md

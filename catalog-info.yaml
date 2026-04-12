@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: arsenal
+  description: Prompt management system with web and CLI components
+  annotations:
+    github.com/project-slug: WinsonBaring/arsenal
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: service
+  lifecycle: production
+  owner: user:default/winsonbaring
+  system: resumeai-platform
